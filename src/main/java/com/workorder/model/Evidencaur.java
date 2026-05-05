@@ -1,352 +1,355 @@
-package com.nalogapp.model;
+package com.workorder.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * JPA entiteta za tabelo Evidencaur.
+ */
 @Entity
-@Table
+@Table(name = "Evidencaur")
 public class Evidencaur {
 
     @Id
     @Column(name = "EuStZapisa")
     private Integer euStZapisa;
-    public Integer getEuStZapisa() {return euStZapisa;}
-    public void setEuStZapisa(Integer v) {this.euStZapisa = v;}
+    public Integer getEuStZapisa() { return euStZapisa; }
+    public void setEuStZapisa(Integer v) { this.euStZapisa = v; }
 
-    private String nameOper;
     @Column(name = "NameOper")
+    private String nameOper;
     public String getNameOper() { return nameOper; }
     public void setNameOper(String v) { this.nameOper = v; }
 
-    private java.time.LocalDateTime datum;
     @Column(name = "Datum")
+    private java.time.LocalDateTime datum;
     public java.time.LocalDateTime getDatum() { return datum; }
     public void setDatum(java.time.LocalDateTime v) { this.datum = v; }
 
-    private Integer euSifDeVnos;
     @Column(name = "EuSifDeVnos")
+    private Integer euSifDeVnos;
     public Integer getEuSifDeVnos() { return euSifDeVnos; }
     public void setEuSifDeVnos(Integer v) { this.euSifDeVnos = v; }
 
-    private java.time.LocalDateTime euDatum;
     @Column(name = "EuDatum")
+    private java.time.LocalDateTime euDatum;
     public java.time.LocalDateTime getEuDatum() { return euDatum; }
     public void setEuDatum(java.time.LocalDateTime v) { this.euDatum = v; }
 
-    private Integer euSifDe;
     @Column(name = "EuSifDe")
+    private Integer euSifDe;
     public Integer getEuSifDe() { return euSifDe; }
     public void setEuSifDe(Integer v) { this.euSifDe = v; }
 
-    private Integer euSifVrUre;
     @Column(name = "EuSifVrUre")
+    private Integer euSifVrUre;
     public Integer getEuSifVrUre() { return euSifVrUre; }
     public void setEuSifVrUre(Integer v) { this.euSifVrUre = v; }
 
-    private Integer euStTock;
     @Column(name = "EuStTock")
+    private Integer euStTock;
     public Integer getEuStTock() { return euStTock; }
     public void setEuStTock(Integer v) { this.euStTock = v; }
 
-    private Integer euStUr;
     @Column(name = "EuStUr")
+    private Integer euStUr;
     public Integer getEuStUr() { return euStUr; }
     public void setEuStUr(Integer v) { this.euStUr = v; }
 
-    private Double euFaktor;
     @Column(name = "EuFaktor")
+    private Double euFaktor;
     public Double getEuFaktor() { return euFaktor; }
     public void setEuFaktor(Double v) { this.euFaktor = v; }
 
-    private Double euFaktorRez;
     @Column(name = "EuFaktorRez")
+    private Double euFaktorRez;
     public Double getEuFaktorRez() { return euFaktorRez; }
     public void setEuFaktorRez(Double v) { this.euFaktorRez = v; }
 
-    private Integer euSifObrPre;
     @Column(name = "EuSifObrPre")
+    private Integer euSifObrPre;
     public Integer getEuSifObrPre() { return euSifObrPre; }
     public void setEuSifObrPre(Integer v) { this.euSifObrPre = v; }
 
-    private Integer euStObrLista;
     @Column(name = "EuStObrLista")
+    private Integer euStObrLista;
     public Integer getEuStObrLista() { return euStObrLista; }
     public void setEuStObrLista(Integer v) { this.euStObrLista = v; }
 
-    private java.time.LocalDateTime euDatPrenosa;
     @Column(name = "EuDatPrenosa")
+    private java.time.LocalDateTime euDatPrenosa;
     public java.time.LocalDateTime getEuDatPrenosa() { return euDatPrenosa; }
     public void setEuDatPrenosa(java.time.LocalDateTime v) { this.euDatPrenosa = v; }
 
-    private Integer euStZapDelNaloga;
     @Column(name = "EuStZapDelNaloga")
+    private Integer euStZapDelNaloga;
     public Integer getEuStZapDelNaloga() { return euStZapDelNaloga; }
     public void setEuStZapDelNaloga(Integer v) { this.euStZapDelNaloga = v; }
 
-    private Integer euStDelNaloga;
     @Column(name = "EuStDelNaloga")
+    private Integer euStDelNaloga;
     public Integer getEuStDelNaloga() { return euStDelNaloga; }
     public void setEuStDelNaloga(Integer v) { this.euStDelNaloga = v; }
 
-    private Integer euStPosDelNaloga;
     @Column(name = "EuStPosDelNaloga")
+    private Integer euStPosDelNaloga;
     public Integer getEuStPosDelNaloga() { return euStPosDelNaloga; }
     public void setEuStPosDelNaloga(Integer v) { this.euStPosDelNaloga = v; }
 
-    private Integer euStZapPotekaDN;
     @Column(name = "EuStZapPotekaDN")
+    private Integer euStZapPotekaDN;
     public Integer getEuStZapPotekaDN() { return euStZapPotekaDN; }
     public void setEuStZapPotekaDN(Integer v) { this.euStZapPotekaDN = v; }
 
-    private Integer euStZapOperacije;
     @Column(name = "EuStZapOperacije")
+    private Integer euStZapOperacije;
     public Integer getEuStZapOperacije() { return euStZapOperacije; }
     public void setEuStZapOperacije(Integer v) { this.euStZapOperacije = v; }
 
-    private Integer euKolDobrih;
     @Column(name = "EuKolDobrih")
+    private Integer euKolDobrih;
     public Integer getEuKolDobrih() { return euKolDobrih; }
     public void setEuKolDobrih(Integer v) { this.euKolDobrih = v; }
 
-    private Integer euKolIzmeta;
     @Column(name = "EuKolIzmeta")
+    private Integer euKolIzmeta;
     public Integer getEuKolIzmeta() { return euKolIzmeta; }
     public void setEuKolIzmeta(Integer v) { this.euKolIzmeta = v; }
 
-    private Integer euSifDelCentra;
     @Column(name = "EuSifDelCentra")
+    private Integer euSifDelCentra;
     public Integer getEuSifDelCentra() { return euSifDelCentra; }
     public void setEuSifDelCentra(Integer v) { this.euSifDelCentra = v; }
 
-    private Integer euZadnjaOp;
     @Column(name = "EuZadnjaOp")
+    private Integer euZadnjaOp;
     public Integer getEuZadnjaOp() { return euZadnjaOp; }
     public void setEuZadnjaOp(Integer v) { this.euZadnjaOp = v; }
 
-    private Integer euSkupina;
     @Column(name = "EuSkupina")
+    private Integer euSkupina;
     public Integer getEuSkupina() { return euSkupina; }
     public void setEuSkupina(Integer v) { this.euSkupina = v; }
 
-    private Integer euVrstaIzm;
     @Column(name = "EuVrstaIzm")
+    private Integer euVrstaIzm;
     public Integer getEuVrstaIzm() { return euVrstaIzm; }
     public void setEuVrstaIzm(Integer v) { this.euVrstaIzm = v; }
 
-    private Integer euOznSled;
     @Column(name = "EuOznSled")
+    private Integer euOznSled;
     public Integer getEuOznSled() { return euOznSled; }
     public void setEuOznSled(Integer v) { this.euOznSled = v; }
 
-    private Double euVredDela;
     @Column(name = "EuVredDela")
+    private Double euVredDela;
     public Double getEuVredDela() { return euVredDela; }
     public void setEuVredDela(Double v) { this.euVredDela = v; }
 
-    private String euPartija;
     @Column(name = "EuPartija")
+    private String euPartija;
     public String getEuPartija() { return euPartija; }
     public void setEuPartija(String v) { this.euPartija = v; }
 
-    private Integer euIUSif;
     @Column(name = "EuIUSif")
+    private Integer euIUSif;
     public Integer getEuIUSif() { return euIUSif; }
     public void setEuIUSif(Integer v) { this.euIUSif = v; }
 
-    private Double euStNorUr;
     @Column(name = "EuStNorUr")
+    private Double euStNorUr;
     public Double getEuStNorUr() { return euStNorUr; }
     public void setEuStNorUr(Double v) { this.euStNorUr = v; }
 
-    private Integer euTipDela;
     @Column(name = "EuTipDela")
+    private Integer euTipDela;
     public Integer getEuTipDela() { return euTipDela; }
     public void setEuTipDela(Integer v) { this.euTipDela = v; }
 
-    private Integer euTip;
     @Column(name = "EuTip")
+    private Integer euTip;
     public Integer getEuTip() { return euTip; }
     public void setEuTip(Integer v) { this.euTip = v; }
 
-    private Integer euStevDel;
     @Column(name = "EuStevDel")
+    private Integer euStevDel;
     public Integer getEuStevDel() { return euStevDel; }
     public void setEuStevDel(Integer v) { this.euStevDel = v; }
 
-    private java.time.LocalDateTime euDatDeRez;
     @Column(name = "EuDatDeRez")
+    private java.time.LocalDateTime euDatDeRez;
     public java.time.LocalDateTime getEuDatDeRez() { return euDatDeRez; }
     public void setEuDatDeRez(java.time.LocalDateTime v) { this.euDatDeRez = v; }
 
-    private String euRaz_StrDel;
     @Column(name = "EuRaz_StrDel")
+    private String euRaz_StrDel;
     public String getEuRaz_StrDel() { return euRaz_StrDel; }
     public void setEuRaz_StrDel(String v) { this.euRaz_StrDel = v; }
 
-    private String euKvaliteta;
     @Column(name = "EuKvaliteta")
+    private String euKvaliteta;
     public String getEuKvaliteta() { return euKvaliteta; }
     public void setEuKvaliteta(String v) { this.euKvaliteta = v; }
 
-    private Integer euObr;
     @Column(name = "EuObr")
+    private Integer euObr;
     public Integer getEuObr() { return euObr; }
     public void setEuObr(Integer v) { this.euObr = v; }
 
-    private Integer euStMpStoritev;
     @Column(name = "EuStMpStoritev")
+    private Integer euStMpStoritev;
     public Integer getEuStMpStoritev() { return euStMpStoritev; }
     public void setEuStMpStoritev(Integer v) { this.euStMpStoritev = v; }
 
-    private Double euZnesek;
     @Column(name = "EuZnesek")
+    private Double euZnesek;
     public Double getEuZnesek() { return euZnesek; }
     public void setEuZnesek(Double v) { this.euZnesek = v; }
 
-    private Integer euSifStroskMesta;
     @Column(name = "EuSifStroskMesta")
+    private Integer euSifStroskMesta;
     public Integer getEuSifStroskMesta() { return euSifStroskMesta; }
     public void setEuSifStroskMesta(Integer v) { this.euSifStroskMesta = v; }
 
-    private String euOpomba;
     @Column(name = "EuOpomba")
+    private String euOpomba;
     public String getEuOpomba() { return euOpomba; }
     public void setEuOpomba(String v) { this.euOpomba = v; }
 
-    private Integer euDeSifStat;
     @Column(name = "EuDeSifStat")
+    private Integer euDeSifStat;
     public Integer getEuDeSifStat() { return euDeSifStat; }
     public void setEuDeSifStat(Integer v) { this.euDeSifStat = v; }
 
-    private Integer euMPSifProdSkup;
     @Column(name = "EuMPSifProdSkup")
+    private Integer euMPSifProdSkup;
     public Integer getEuMPSifProdSkup() { return euMPSifProdSkup; }
     public void setEuMPSifProdSkup(Integer v) { this.euMPSifProdSkup = v; }
 
-    private Double euFaktor2;
     @Column(name = "EuFaktor2")
+    private Double euFaktor2;
     public Double getEuFaktor2() { return euFaktor2; }
     public void setEuFaktor2(Double v) { this.euFaktor2 = v; }
 
-    private Double euFaktor3;
     @Column(name = "EuFaktor3")
+    private Double euFaktor3;
     public Double getEuFaktor3() { return euFaktor3; }
     public void setEuFaktor3(Double v) { this.euFaktor3 = v; }
 
-    private Integer euSifVrDok;
     @Column(name = "EuSifVrDok")
+    private Integer euSifVrDok;
     public Integer getEuSifVrDok() { return euSifVrDok; }
     public void setEuSifVrDok(Integer v) { this.euSifVrDok = v; }
 
-    private Integer euSkupIzd;
     @Column(name = "EuSkupIzd")
+    private Integer euSkupIzd;
     public Integer getEuSkupIzd() { return euSkupIzd; }
     public void setEuSkupIzd(Integer v) { this.euSkupIzd = v; }
 
-    private Integer euPostNapake;
     @Column(name = "EuPostNapake")
+    private Integer euPostNapake;
     public Integer getEuPostNapake() { return euPostNapake; }
     public void setEuPostNapake(Integer v) { this.euPostNapake = v; }
 
-    private Integer euNosilStroska;
     @Column(name = "EuNosilStroska")
+    private Integer euNosilStroska;
     public Integer getEuNosilStroska() { return euNosilStroska; }
     public void setEuNosilStroska(Integer v) { this.euNosilStroska = v; }
 
-    private Integer euVrstaNeProizv;
     @Column(name = "EuVrstaNeProizv")
+    private Integer euVrstaNeProizv;
     public Integer getEuVrstaNeProizv() { return euVrstaNeProizv; }
     public void setEuVrstaNeProizv(Integer v) { this.euVrstaNeProizv = v; }
 
-    private Integer euVzrokIzmeta;
     @Column(name = "EuVzrokIzmeta")
+    private Integer euVzrokIzmeta;
     public Integer getEuVzrokIzmeta() { return euVzrokIzmeta; }
     public void setEuVzrokIzmeta(Integer v) { this.euVzrokIzmeta = v; }
 
-    private Integer euSled;
     @Column(name = "EuSled")
+    private Integer euSled;
     public Integer getEuSled() { return euSled; }
     public void setEuSled(Integer v) { this.euSled = v; }
 
-    private String euIdentIzmeta;
     @Column(name = "EuIdentIzmeta")
+    private String euIdentIzmeta;
     public String getEuIdentIzmeta() { return euIdentIzmeta; }
     public void setEuIdentIzmeta(String v) { this.euIdentIzmeta = v; }
 
-    private Double euMasaIzmeta;
     @Column(name = "EuMasaIzmeta")
+    private Double euMasaIzmeta;
     public Double getEuMasaIzmeta() { return euMasaIzmeta; }
     public void setEuMasaIzmeta(Double v) { this.euMasaIzmeta = v; }
 
-    private Integer euSklIzmeta;
     @Column(name = "EuSklIzmeta")
+    private Integer euSklIzmeta;
     public Integer getEuSklIzmeta() { return euSklIzmeta; }
     public void setEuSklIzmeta(Integer v) { this.euSklIzmeta = v; }
 
-    private String euLokIzmeta;
     @Column(name = "EuLokIzmeta")
+    private String euLokIzmeta;
     public String getEuLokIzmeta() { return euLokIzmeta; }
     public void setEuLokIzmeta(String v) { this.euLokIzmeta = v; }
 
-    private String euKontrolor;
     @Column(name = "EuKontrolor")
+    private String euKontrolor;
     public String getEuKontrolor() { return euKontrolor; }
     public void setEuKontrolor(String v) { this.euKontrolor = v; }
 
-    private String euRazlogDod;
     @Column(name = "EuRazlogDod")
+    private String euRazlogDod;
     public String getEuRazlogDod() { return euRazlogDod; }
     public void setEuRazlogDod(String v) { this.euRazlogDod = v; }
 
-    private String euPovzrocitelj;
     @Column(name = "EuPovzrocitelj")
+    private String euPovzrocitelj;
     public String getEuPovzrocitelj() { return euPovzrocitelj; }
     public void setEuPovzrocitelj(String v) { this.euPovzrocitelj = v; }
 
-    private String euNacin;
     @Column(name = "EuNacin")
+    private String euNacin;
     public String getEuNacin() { return euNacin; }
     public void setEuNacin(String v) { this.euNacin = v; }
 
-    private String euCustom1;
     @Column(name = "EuCustom1")
+    private String euCustom1;
     public String getEuCustom1() { return euCustom1; }
     public void setEuCustom1(String v) { this.euCustom1 = v; }
 
-    private String euCustom2;
     @Column(name = "EuCustom2")
+    private String euCustom2;
     public String getEuCustom2() { return euCustom2; }
     public void setEuCustom2(String v) { this.euCustom2 = v; }
 
-    private String euCustom3;
     @Column(name = "EuCustom3")
+    private String euCustom3;
     public String getEuCustom3() { return euCustom3; }
     public void setEuCustom3(String v) { this.euCustom3 = v; }
 
-    private String euCustom4;
     @Column(name = "EuCustom4")
+    private String euCustom4;
     public String getEuCustom4() { return euCustom4; }
     public void setEuCustom4(String v) { this.euCustom4 = v; }
 
-    private String euCustom5;
     @Column(name = "EuCustom5")
+    private String euCustom5;
     public String getEuCustom5() { return euCustom5; }
     public void setEuCustom5(String v) { this.euCustom5 = v; }
 
-    private String euCustom6;
     @Column(name = "EuCustom6")
+    private String euCustom6;
     public String getEuCustom6() { return euCustom6; }
     public void setEuCustom6(String v) { this.euCustom6 = v; }
 
-    private String euCustom7;
     @Column(name = "EuCustom7")
+    private String euCustom7;
     public String getEuCustom7() { return euCustom7; }
     public void setEuCustom7(String v) { this.euCustom7 = v; }
 
-    private String euProjekt;
     @Column(name = "EuProjekt")
+    private String euProjekt;
     public String getEuProjekt() { return euProjekt; }
     public void setEuProjekt(String v) { this.euProjekt = v; }
 }
