@@ -139,9 +139,10 @@ public class DelovniNalogView extends VerticalLayout {
 
         grid.setHeightFull();
 
-        // Fallback polling vsako minuto (če CollaborationEngine ne bi bil na voljo)
+        //iz DB -> webapp na 1sec
+        // Fallback polling(če CollaborationEngine ne bi delu)
         UI ui = UI.getCurrent();
-        ui.setPollInterval(60_000);
+        ui.setPollInterval(1_000); //1sec
         ui.addPollListener(e -> ui.access(this::refreshGrid));
 
         Div card = new Div(grid);
@@ -161,7 +162,7 @@ public class DelovniNalogView extends VerticalLayout {
 
     private void buildGridColumns() {
 
-        // ---- 0: VRSTNI RED / STATUS BADGE ----
+        // 0: VRSTNI RED / STATUS BADGE  <<
         grid.addComponentColumn(dto -> {
             Span badge = new Span(dto.getPdnInfZapStDp() != null
                     ? String.valueOf(dto.getPdnInfZapStDp()) : "-");
@@ -193,7 +194,7 @@ public class DelovniNalogView extends VerticalLayout {
             return badge;
         }).setHeader("Vrstni red").setWidth("110px").setFlexGrow(0);
 
-        // ---- 1: DELOVNI NALOG ----
+        // 1: DELOVNI NALOG  <<
         grid.addComponentColumn(dto -> {
             VerticalLayout cell = new VerticalLayout();
             cell.setSpacing(false);
@@ -235,17 +236,14 @@ public class DelovniNalogView extends VerticalLayout {
             return cell;
         }).setHeader("Delovni nalog").setFlexGrow(2).setWidth("280px");
 
-        // ---- 2: ZA IZDELAVO PANELOV (preostalo) ----
+        // 2: ZA IZDELAVO PANELOV (preostalo)  <<
         grid.addColumn(dto -> {
             double zaIzd   = dto.getDnpKolZaIzdelavo() != null ? dto.getDnpKolZaIzdelavo() : 0;
-            double pakiran = dto.getMpKolPakiranMp() != null && dto.getMpKolPakiranMp() > 0
-                    ? dto.getMpKolPakiranMp() : 1;
-            double sum1    = dto.getSumEuCustom1() != null ? dto.getSumEuCustom1() : 0;
-            int preostalo  = (int) Math.ceil(zaIzd / pakiran) - (int) sum1;
-            return preostalo + " pan";
+            int preostalo = (int)(zaIzd - (dto.getSumEuKolDobrih() != null ? dto.getSumEuKolDobrih() : 0));
+            return preostalo + " kos";
         }).setHeader("Za izdelavo").setWidth("120px").setFlexGrow(0);
 
-        // ---- 3: ZAČETEK / KONEC gumba ----
+        // 3: ZAČETEK / KONEC gumba  <<
         grid.addComponentColumn(dto -> {
             String status = dto.getPdnStatus();
 
@@ -277,7 +275,7 @@ public class DelovniNalogView extends VerticalLayout {
             return gumbi;
         }).setHeader("Začetek / Konec").setWidth("210px").setFlexGrow(0);
 
-        // ---- 4: PDF ----
+        // 4: PDF  <<
         grid.addComponentColumn(dto -> {
             Button pdf = new Button("PDF", VaadinIcon.FILE_TEXT_O.create());
             pdf.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_CONTRAST);
@@ -293,19 +291,19 @@ public class DelovniNalogView extends VerticalLayout {
             return pdf;
         }).setHeader("PDF").setWidth("80px").setFlexGrow(0);
 
-        // ---- 5: IZDELANO PANELOV ----
+        // 5: IZDELANO KOSOU  <<
         grid.addColumn(dto -> {
-            Double sum = dto.getSumEuCustom2();
-            return (sum != null ? sum.intValue() : 0) + " pan";
+            Double sum = dto.getSumEuKolDobrih();
+            return (sum != null ? sum.intValue() : 0) + " kos";
         }).setHeader("Izdelano").setWidth("100px").setFlexGrow(0);
 
-        // ---- 6: OPOMBA ----
+        // 6: OPOMBA  <<
         grid.addColumn(DelovniNalogDto::getMpOpomba)
                 .setHeader("Opomba")
                 .setFlexGrow(1)
                 .setWidth("160px");
 
-        // ---- 7: NASLEDNJA OPERACIJA ----
+        // 7: NASLEDNJA OPERACIJA  <<
         grid.addColumn(DelovniNalogDto::getNextPdnNazivDp)
                 .setHeader("Naslednja op.")
                 .setFlexGrow(1)
@@ -334,34 +332,29 @@ public class DelovniNalogView extends VerticalLayout {
     }
 
     private void handleKonec(DelovniNalogDto dto) {
-        // POPRAVEK: KONEC je mogoč SAMO ko je nalog v delu (VD).
-        // Prej je bila logika obrnjena >> vračala napako prav ko je bil VD!
         if (!dto.isVDelu()) {
             showNotification("Nalog ni v stanju 'V delu'. Najprej pritisni ZAČETEK.", true);
             return;
         }
 
         double zaIzd   = dto.getDnpKolZaIzdelavo() != null ? dto.getDnpKolZaIzdelavo() : 0;
-        double pakiran = dto.getMpKolPakiranMp() != null && dto.getMpKolPakiranMp() > 0
-                ? dto.getMpKolPakiranMp() : 1;
-        double sumDob  = dto.getSumEuKolDobrih() != null ? dto.getSumEuKolDobrih() : 0;
-        // Maksimalno preostalih panelov (zaokroženo navzgor)
-        int maxPan = (int) Math.ceil((zaIzd - sumDob) / pakiran);
-        if (maxPan < 1) maxPan = 1;
+        double sumDob = dto.getSumEuKolDobrih() != null ? dto.getSumEuKolDobrih() : 0;
+        int maxKos = (int)(zaIzd - sumDob);
+        if (maxKos < 1) maxKos = 1;
 
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Konec: nalog " + dto.getPdnStDelNaloga());
         dialog.setWidth("360px");
 
-        Span info = new Span("Preostalo za izdelat: " + maxPan + " panelov");
+        Span info = new Span("Preostalo za izdelat: " + maxKos + " kosov");
         info.getStyle()
                 .set("color", "var(--lumo-secondary-text-color)")
                 .set("font-size", "0.9em");
 
-        IntegerField paneliField = new IntegerField("Število izdelanih panelov");
+        IntegerField paneliField = new IntegerField("Količina (kosi)");
         paneliField.setMin(1);
-        paneliField.setMax(maxPan);
-        paneliField.setValue(maxPan);
+        paneliField.setMax(maxKos);
+        paneliField.setValue(maxKos);
         paneliField.setStepButtonsVisible(true);
         paneliField.setWidthFull();
 
@@ -371,19 +364,17 @@ public class DelovniNalogView extends VerticalLayout {
         prekini.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         prekini.addClickListener(e -> dialog.close());
 
-        final int maxPanFinal = maxPan;
+        final int maxKosFinal = maxKos;
         potrdi.addClickListener(e -> {
             Integer vpisano = paneliField.getValue();
             if (vpisano == null || vpisano <= 0) {
                 showNotification("Vnesi veljavno število panelov!", true);
                 return;
             }
-            // Preveri da skupaj ne preseže naročenega
-            double pankos   = vpisano * pakiran;
-            double sumTotal = sumDob + pankos;
+            double sumTotal = sumDob + vpisano; //prev: ne preseže naročenga
             if (sumTotal > zaIzd) {
                 showNotification("NAPAKA: Vpisanih je več kot lansiranih! Maks: "
-                        + maxPanFinal + " pan", true);
+                        + maxKosFinal + " pan", true);
                 return;
             }
             try {

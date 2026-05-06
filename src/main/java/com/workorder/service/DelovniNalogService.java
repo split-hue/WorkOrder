@@ -52,14 +52,14 @@ public class DelovniNalogService {
      */
     @Transactional
     public void zakljuciNalog(DelovniNalogDto nalog, int steviloPanelov, String operater) {
-        double pakirano   = safe(nalog.getMpKolPakiranMp(), 1.0);
-        double pankos     = steviloPanelov * pakirano;
+        //double pakirano   = safe(nalog.getMpKolPakiranMp(), 1.0);
+        double pankos = steviloPanelov;
         double sumDobrih  = safe(nalog.getSumEuKolDobrih(), 0.0);
-        double sumCustom1 = safe(nalog.getSumEuCustom1(), 0.0);
+        //double sumCustom1 = safe(nalog.getSumEuCustom1(), 0.0); ne rabmo več k se kle ne štejejo paneli, sam raw kosi
         double zaIzdelavo = safe(nalog.getDnpKolZaIzdelavo(), 0.0);
 
         double novSkupajKosi    = sumDobrih + pankos;
-        int    novSkupajPanelov = (int)(sumCustom1 + steviloPanelov);
+        //int    novSkupajPanelov = (int)(sumCustom1 + steviloPanelov);
 
         boolean zakljucen = novSkupajKosi >= zaIzdelavo;
         String novStatus = zakljucen ? "KO" : "ND";
@@ -70,8 +70,8 @@ public class DelovniNalogService {
         Evidencaur eu = novaEvidencaur(nalog, operater);
         eu.setEuKolDobrih((int) pankos);
         eu.setEuKolIzmeta(0);
-        eu.setEuCustom1(String.valueOf(novSkupajPanelov));
-        eu.setEuCustom2(String.valueOf(steviloPanelov));
+        eu.setEuCustom1(null); //String.valueOf(novSkupajPanelov));
+        eu.setEuCustom2(null); //String.valueOf(steviloPanelov));
         eu.setEuZadnjaOp(zadnjaOp);
 
         repo.insertEvidencaur(eu);
@@ -119,6 +119,6 @@ public class DelovniNalogService {
     }
 
     private double safe(Double val, double fallback) {
-        return val != null ? val : fallback;
+        return (val != null && val > 0) ? val : fallback;
     }
 }
