@@ -219,9 +219,9 @@ public class Evidencaur {
     public void setEuOpomba(String v) { this.euOpomba = v; }
 
     @Column(name = "EuDeSifStat")
-    private Integer euDeSifStat;
-    public Integer getEuDeSifStat() { return euDeSifStat; }
-    public void setEuDeSifStat(Integer v) { this.euDeSifStat = v; }
+    private String euDeSifStat;
+    public String getEuDeSifStat() { return euDeSifStat; }
+    public void setEuDeSifStat(String v) { this.euDeSifStat = v; }
 
     @Column(name = "EuMPSifProdSkup")
     private Integer euMPSifProdSkup;
@@ -239,9 +239,9 @@ public class Evidencaur {
     public void setEuFaktor3(Double v) { this.euFaktor3 = v; }
 
     @Column(name = "EuSifVrDok")
-    private Integer euSifVrDok;
-    public Integer getEuSifVrDok() { return euSifVrDok; }
-    public void setEuSifVrDok(Integer v) { this.euSifVrDok = v; }
+    private String euSifVrDok;
+    public String getEuSifVrDok() { return euSifVrDok; }
+    public void setEuSifVrDok(String v) { this.euSifVrDok = v; }
 
     @Column(name = "EuSkupIzd")
     private Integer euSkupIzd;

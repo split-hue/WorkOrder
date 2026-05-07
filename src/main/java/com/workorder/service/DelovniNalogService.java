@@ -42,7 +42,7 @@ public class DelovniNalogService {
         eu.setEuKolIzmeta(0);
         eu.setEuCustom1(null);
         eu.setEuCustom2(null);
-        eu.setEuZadnjaOp(0);
+        eu.setEuZadnjaOp(null);
 
         repo.insertEvidencaur(eu);
     }
@@ -73,6 +73,7 @@ public class DelovniNalogService {
         eu.setEuCustom1(null); //String.valueOf(novSkupajPanelov));
         eu.setEuCustom2(null); //String.valueOf(steviloPanelov));
         eu.setEuZadnjaOp(zadnjaOp);
+        eu.setEuVrstaIzm(0);
 
         repo.insertEvidencaur(eu);
     }
@@ -108,12 +109,12 @@ public class DelovniNalogService {
         eu.setEuRaz_StrDel("1");
         eu.setEuKvaliteta("100");
         eu.setEuSifStroskMesta(2);
-        eu.setEuDeSifStat(null);
+        eu.setEuDeSifStat("A");
         eu.setEuFaktor2(1.0);
         eu.setEuFaktor3(1.0);
-        eu.setEuSifVrDok(null);
+        eu.setEuSifVrDok("PDN");
         eu.setEuPovzrocitelj("1");
-        eu.setEuVrstaIzm(0);
+        eu.setEuVrstaIzm(null);
 
         return eu;
     }
