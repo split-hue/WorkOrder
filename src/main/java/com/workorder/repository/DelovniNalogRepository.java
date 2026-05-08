@@ -144,7 +144,8 @@ public class DelovniNalogRepository {
             EuSifStroskMesta, EuDeSifStat,
             EuFaktor2, EuFaktor3,
             EuSifVrDok, EuPovzrocitelj,
-            EuZadnjaOp, EuVrstaIzm, EuSifDelCentra
+            EuZadnjaOp, EuVrstaIzm, EuSifDelCentra,
+            EuStZapOperacije
         )
         SELECT
             ISNULL(MAX(EuStZapisa), 0) + 1,
@@ -159,12 +160,13 @@ public class DelovniNalogRepository {
             ?, ?,
             ?, ?,
             ?, ?,
-            ?, ?, ?
+            ?, ?, ?,
+            ?
         FROM Evidencaur
         WITH (TABLOCKX)
         """;
 
-        jdbc.update(sql, /* ... enaki parametri kot prej ... */
+        jdbc.update(sql,
                 eu.getEuStZapPotekaDN(), eu.getEuStDelNaloga(), eu.getEuStZapDelNaloga(),
                 eu.getEuKolDobrih(), eu.getEuKolIzmeta(),
                 eu.getEuCustom1(), eu.getEuCustom2(), eu.getEuCustom4(), eu.getEuCustom6(),
@@ -176,7 +178,8 @@ public class DelovniNalogRepository {
                 eu.getEuSifStroskMesta(), eu.getEuDeSifStat(),
                 eu.getEuFaktor2(), eu.getEuFaktor3(),
                 eu.getEuSifVrDok(), eu.getEuPovzrocitelj(),
-                eu.getEuZadnjaOp(), eu.getEuVrstaIzm(), eu.getEuSifDelCentra()
+                eu.getEuZadnjaOp(), eu.getEuVrstaIzm(), eu.getEuSifDelCentra(),
+                eu.getEuStZapOperacije()
         );
     }
 

@@ -234,7 +234,9 @@ public class DelovniNalogView extends VerticalLayout {
                         .set("padding", "4px 6px");
             }
             return cell;
-        }).setHeader("Delovni nalog").setFlexGrow(2).setWidth("280px");
+
+
+        }).setHeader("Delovni nalog").setFlexGrow(2).setWidth("220px");
 
         // 2: ZA IZDELAVO PANELOV (preostalo)  <<
         grid.addColumn(dto -> {
@@ -273,7 +275,7 @@ public class DelovniNalogView extends VerticalLayout {
             gumbi.setSpacing(true);
             gumbi.setPadding(false);
             return gumbi;
-        }).setHeader("Začetek / Konec").setWidth("210px").setFlexGrow(0);
+        }).setHeader("Začetek / Konec").setWidth("230px").setFlexGrow(0);
 
         // 4: PDF  <<
         grid.addComponentColumn(dto -> {

@@ -74,6 +74,7 @@ public class DelovniNalogService {
         eu.setEuCustom2(null); //String.valueOf(steviloPanelov));
         eu.setEuZadnjaOp(zadnjaOp);
         eu.setEuVrstaIzm(0);
+        eu.setEuStZapOperacije(nalog.getPdnInfZapStDp());
 
         repo.insertEvidencaur(eu);
     }
@@ -115,6 +116,7 @@ public class DelovniNalogService {
         eu.setEuSifVrDok("PDN");
         eu.setEuPovzrocitelj("1");
         eu.setEuVrstaIzm(null);
+        eu.setEuStZapOperacije(0);
 
         return eu;
     }
