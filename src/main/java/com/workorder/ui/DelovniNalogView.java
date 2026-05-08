@@ -218,14 +218,14 @@ public class DelovniNalogView extends VerticalLayout {
 
             cell.add(stNaloga, naziv, mpNaziv);
 
-            // Barva ozadja glede na vrsto naloga (DNpSifVrsteDN)
+            //barva ozadja glede na vrsto naloga (DNpSifVrsteDN)
             String vrsta = dto.getDnpSifVrsteDN();
             String barva = switch (vrsta != null ? vrsta.trim() : "") {
-                case "20" -> "#fffacd";  // rumena
-                case "30" -> "#ffcccc";  // rdeča
-                case "60" -> "#ccffcc";  // zelena
-                case "80" -> "#ffccff";  // roza
-                case "90" -> "#e0ccff";  // vijolična
+                case "20" -> "var(--barva-rumena)";
+                case "30" -> "var(--barva-rdeca)";
+                case "60" -> "var(--barva-zelena)";
+                case "80" -> "var(--barva-roza)";
+                case "90" -> "var(--barva-vijolicna)";
                 default   -> null;
             };
             if (barva != null) {
@@ -244,7 +244,7 @@ public class DelovniNalogView extends VerticalLayout {
             double zaIzd   = dto.getDnpKolZaIzdelavo() != null ? dto.getDnpKolZaIzdelavo() : 0;
             int preostalo = (int)(zaIzd - (dto.getSumEuKolDobrih() != null ? dto.getSumEuKolDobrih() : 0));
             return preostalo + " kos";
-        }).setHeader("Za izdelavo").setWidth("120px").setFlexGrow(0);
+        }).setHeader("Za izdelavo").setWidth("110px").setFlexGrow(0);
 
         // 3: ZAČETEK / KONEC gumba  <<
         grid.addComponentColumn(dto -> {
