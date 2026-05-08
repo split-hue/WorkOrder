@@ -55,6 +55,8 @@ public class DelovniNalogView extends VerticalLayout {
             "Operater" // TODO: zameni ime k bo login?
     );
 
+    private int rowCounter = 0;
+
     public DelovniNalogView(DelovniNalogService service) {
         this.service = service;
 
@@ -161,11 +163,10 @@ public class DelovniNalogView extends VerticalLayout {
     }
 
     private void buildGridColumns() {
-
         // 0: VRSTNI RED / STATUS BADGE  <<
         grid.addComponentColumn(dto -> {
-            Span badge = new Span(dto.getPdnInfZapStDp() != null
-                    ? String.valueOf(dto.getPdnInfZapStDp()) : "-");
+            rowCounter++;
+            Span badge = new Span(String.valueOf(rowCounter));
             badge.getStyle()
                     .set("padding", "4px 10px")
                     .set("border-radius", "12px")
@@ -314,6 +315,7 @@ public class DelovniNalogView extends VerticalLayout {
 
     // ===============================================================================================
     private void refreshGrid() {
+        rowCounter = 0;
         List<DelovniNalogDto> nalogi = service.getNalogi();
         grid.setItems(nalogi);
     }
@@ -370,13 +372,13 @@ public class DelovniNalogView extends VerticalLayout {
         potrdi.addClickListener(e -> {
             Integer vpisano = paneliField.getValue();
             if (vpisano == null || vpisano <= 0) {
-                showNotification("Vnesi veljavno število panelov!", true);
+                showNotification("Vnesi veljavno količino!", true);
                 return;
             }
             double sumTotal = sumDob + vpisano; //prev: ne preseže naročenga
             if (sumTotal > zaIzd) {
                 showNotification("NAPAKA: Vpisanih je več kot lansiranih! Maks: "
-                        + maxKosFinal + " pan", true);
+                        + maxKosFinal + " kos", true);
                 return;
             }
             try {
