@@ -17,4 +17,17 @@
     font-size: var(--lumo-font-size-s);
 }
 
+:root {
+    --barva-rumena: rgba(255, 215, 0, 0.25);
+    --barva-rdeca: rgba(255, 100, 100, 0.25);
+    --barva-zelena: rgba(100, 200, 100, 0.25);
+    --barva-roza: rgba(255, 150, 200, 0.25);
+    --barva-vijolicna: rgba(180, 130, 255, 0.25);
+}
+[theme~="dark"] {
+    --barva-rumena: rgba(255, 215, 0, 0.15);
+    --barva-rdeca: rgba(255, 100, 100, 0.15);
+    --barva-zelena: rgba(100, 200, 100, 0.15);
+    --barva-roza: rgba(255, 150, 200, 0.15);
+    --barva-vijolicna: rgba(180, 130, 255, 0.15);
 }
