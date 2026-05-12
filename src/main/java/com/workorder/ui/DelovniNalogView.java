@@ -62,6 +62,9 @@ public class DelovniNalogView extends VerticalLayout {
 
         setPadding(false);
         setSpacing(false);
+
+        applyCookie();
+
         setSizeFull();
 
         VerticalLayout ostalo = new VerticalLayout(
@@ -144,11 +147,20 @@ public class DelovniNalogView extends VerticalLayout {
 
         Button temaButton = new Button();
         temaButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+
         updateThemeButton(temaButton);
-        temaButton.addClickListener(e -> {
-            ThemeList tl = UI.getCurrent().getElement().getThemeList();
-            if (tl.contains(Lumo.DARK)) tl.remove(Lumo.DARK);
-            else tl.add(Lumo.DARK);
+
+        temaButton.addClickListener(click -> {
+            ThemeList themeList = UI.getCurrent().getElement().getThemeList();
+            if (themeList.contains(Lumo.DARK)) {
+                themeList.remove(Lumo.DARK);
+                ((Button) click.getSource()).setText("temno");
+                saveCookie("light");
+            } else {
+                themeList.add(Lumo.DARK);
+                ((Button) click.getSource()).setText("svetlo");
+                saveCookie("dark");
+            }
             updateThemeButton(temaButton);
         });
 
@@ -441,5 +453,29 @@ public class DelovniNalogView extends VerticalLayout {
                 : NotificationVariant.LUMO_SUCCESS);
         n.setPosition(Notification.Position.TOP_CENTER);
         n.open();
+    }
+
+    //=============================================
+    // cookie za shranjevanje zadnje izbrane teme
+    //=============================================
+
+    private void saveCookie(String theme) {
+        UI.getCurrent().getPage().executeJs(
+                "document.cookie = 'tema=' + $0 + '; max-age=' + (7*24*60*60) + '; path=/'",
+                theme
+        );
+    }
+
+    private void applyCookie(){
+        UI.getCurrent().getPage().executeJs(
+                "return document.cookie.split(';').map(c => c.trim()).find(c => c.startsWith('tema='))?.split('=')[1] || 'dark';"
+        ).then(String.class, theme -> {
+            ThemeList themeList = UI.getCurrent().getElement().getThemeList();
+            if ("dark".equals(theme)) {
+                themeList.add(Lumo.DARK);
+            } else {
+                themeList.remove(Lumo.DARK);
+            }
+        });
     }
 }
