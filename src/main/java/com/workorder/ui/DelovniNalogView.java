@@ -1,5 +1,6 @@
 package com.workorder.ui;
 
+import com.vaadin.flow.component.textfield.TextArea;
 import com.workorder.model.DelovniNalogDto;
 import com.workorder.service.DelovniNalogService;
 
@@ -416,6 +417,13 @@ public class DelovniNalogView extends VerticalLayout {
         prekini.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         prekini.addClickListener(e -> dialog.close());
 
+        //možnost dodajanja opombe ob koncu
+        TextArea opomba = new TextArea("Opomba");
+        opomba.setPlaceholder("Neobvezno...");
+        opomba.setWidthFull();
+        opomba.setMaxLength(500);
+
+
         final int maxKosFinal = maxKos;
         potrdi.addClickListener(e -> {
             Integer vpisano = paneliField.getValue();
@@ -430,7 +438,7 @@ public class DelovniNalogView extends VerticalLayout {
                 return;
             }
             try {
-                service.zakljuciNalog(dto, vpisano, localUser.getName());
+                service.zakljuciNalog(dto, vpisano, localUser.getName(), opomba.getValue());
                 dialog.close();
                 broadcastRefresh(); // osvežimo vse terminale
                 showNotification("Nalog " + dto.getPdnStDelNaloga() + " >> konec zabeležen.", false);
@@ -439,7 +447,7 @@ public class DelovniNalogView extends VerticalLayout {
             }
         });
 
-        dialog.add(new VerticalLayout(info, paneliField));
+        dialog.add(new VerticalLayout(info, paneliField, opomba));
         dialog.getFooter().add(prekini, potrdi);
         dialog.open();
     }

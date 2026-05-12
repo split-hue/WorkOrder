@@ -145,7 +145,7 @@ public class DelovniNalogRepository {
             EuFaktor2, EuFaktor3,
             EuSifVrDok, EuPovzrocitelj,
             EuZadnjaOp, EuVrstaIzm, EuSifDelCentra,
-            EuStZapOperacije
+            EuStZapOperacije, EuOpomba
         )
         SELECT
             ISNULL(MAX(EuStZapisa), 0) + 1,
@@ -161,7 +161,7 @@ public class DelovniNalogRepository {
             ?, ?,
             ?, ?,
             ?, ?, ?,
-            ?
+            ?, ?
         FROM Evidencaur
         WITH (TABLOCKX)
         """;
@@ -179,7 +179,7 @@ public class DelovniNalogRepository {
                 eu.getEuFaktor2(), eu.getEuFaktor3(),
                 eu.getEuSifVrDok(), eu.getEuPovzrocitelj(),
                 eu.getEuZadnjaOp(), eu.getEuVrstaIzm(), eu.getEuSifDelCentra(),
-                eu.getEuStZapOperacije()
+                eu.getEuStZapOperacije(), eu.getEuOpomba()
         );
     }
 

@@ -51,7 +51,7 @@ public class DelovniNalogService {
      * KONEC: izračuna status (KO/ND), vpiše panele, vstavi Evidencaur
      */
     @Transactional
-    public void zakljuciNalog(DelovniNalogDto nalog, int steviloPanelov, String operater) {
+    public void zakljuciNalog(DelovniNalogDto nalog, int steviloPanelov, String operater, String opomba) {
         //double pakirano   = safe(nalog.getMpKolPakiranMp(), 1.0);
         double pankos = steviloPanelov;
         double sumDobrih  = safe(nalog.getSumEuKolDobrih(), 0.0);
@@ -75,6 +75,7 @@ public class DelovniNalogService {
         eu.setEuZadnjaOp(zadnjaOp);
         eu.setEuVrstaIzm(0);
         eu.setEuStZapOperacije(nalog.getPdnInfZapStDp());
+        eu.setEuOpomba(opomba != null && !opomba.isBlank() ? opomba : null); //podana ob koncu če če
 
         repo.insertEvidencaur(eu);
     }
@@ -109,7 +110,7 @@ public class DelovniNalogService {
         eu.setEuStevDel(1);
         eu.setEuRaz_StrDel("1");
         eu.setEuKvaliteta("100");
-        eu.setEuSifStroskMesta(2);
+        eu.setEuSifStroskMesta(3);
         eu.setEuDeSifStat("A");
         eu.setEuFaktor2(1.0);
         eu.setEuFaktor3(1.0);
