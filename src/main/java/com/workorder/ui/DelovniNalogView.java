@@ -64,7 +64,15 @@ public class DelovniNalogView extends VerticalLayout {
         setSpacing(false);
         setSizeFull();
 
-        add(buildBanner(), buildGridSection());
+        VerticalLayout ostalo = new VerticalLayout(
+                buildHeader(),
+                buildGrid()
+        );
+        ostalo.setPadding(true);
+        ostalo.setSpacing(true);
+        ostalo.setSizeFull();
+
+        add(buildBanner(), ostalo);
 
         setupCollaboration();
         refreshGrid();
@@ -101,12 +109,38 @@ public class DelovniNalogView extends VerticalLayout {
         );
     }
 
+
+
     //============================================UI==========================
 
 
     private HorizontalLayout buildBanner() {
-        H3 naslov = new H3("Delovni nalogi >> montaža panelov");
-        naslov.getStyle().set("margin", "0").set("cursor", "default");
+        Image logo = new Image("slike/logo-transparent.png", "logo");
+        logo.setHeight("60px");
+
+        HorizontalLayout banner = new HorizontalLayout(logo);
+        banner.setAlignItems(Alignment.CENTER);
+        banner.setWidth("100%");
+        banner.setPadding(true);
+        banner.getStyle().set("height", "64px");
+        banner.setClassName("banner-barva");
+
+        return banner;
+    }
+
+    private HorizontalLayout buildHeader() {
+        H2 naslov = new H2("Beleženje delovnih nalogov");
+        naslov.getStyle().set("cursor", "default");
+
+        H5 podNaslov = new H5("Montaža panelov (delovni center št. 20)");
+        podNaslov.getStyle()
+                .set("cursor", "default")
+                .set("font-weight", "normal");
+
+        VerticalLayout naslovBlock = new VerticalLayout(naslov, podNaslov);
+        naslovBlock.setSpacing(false);
+        naslovBlock.setPadding(false);
+        naslovBlock.getStyle().set("gap", "5px");
 
         Button temaButton = new Button();
         temaButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
@@ -118,16 +152,11 @@ public class DelovniNalogView extends VerticalLayout {
             updateThemeButton(temaButton);
         });
 
-        HorizontalLayout banner = new HorizontalLayout(naslov, temaButton);
-        banner.setWidthFull();
-        banner.setAlignItems(Alignment.CENTER);
-        banner.setJustifyContentMode(JustifyContentMode.BETWEEN);
-        banner.setPadding(true);
-        banner.getStyle()
-                .set("background", "var(--lumo-contrast-5pct)")
-                .set("border-bottom", "1.5px solid var(--lumo-contrast-10pct)")
-                .set("flex-shrink", "0");
-        return banner;
+        HorizontalLayout header = new HorizontalLayout(naslovBlock, temaButton);
+        header.setWidthFull();
+        header.setAlignItems(Alignment.CENTER);
+        header.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        return header;
     }
 
     private void updateThemeButton(Button btn) {
@@ -136,8 +165,11 @@ public class DelovniNalogView extends VerticalLayout {
         btn.setIcon(dark ? VaadinIcon.SUN_O.create() : VaadinIcon.MOON.create());
     }
 
-    private VerticalLayout buildGridSection() {
+    private VerticalLayout buildGrid() {
         buildGridColumns();
+
+        grid.getStyle().set("border", "none");
+        grid.getStyle().set("--lumo-base-color", "transparent");
 
         grid.setHeightFull();
 
@@ -255,11 +287,11 @@ public class DelovniNalogView extends VerticalLayout {
             zacetek.addThemeVariants(ButtonVariant.LUMO_SMALL);
             konec.addThemeVariants(ButtonVariant.LUMO_SMALL);
 
-            // Barva ozadja gumbov glede na status
-            if (STATUS_VD.equals(status)) {
+            //po default če je STATUS_PL je barva ozadja bela <<<<<<
+            if (STATUS_VD.equals(status)) { //status: v delu
                 zacetek.getStyle().set("background-color", "#FFD700").set("color", "#333");
                 konec.getStyle().set("background-color", "#FFD700").set("color", "#333");
-            } else if (STATUS_ND.equals(status)) {
+            } else if (STATUS_ND.equals(status)) { //status: ne dokončano
                 zacetek.getStyle().set("background-color", "#4169E1").set("color", "white");
                 konec.getStyle().set("background-color", "#4169E1").set("color", "white");
             }
@@ -276,7 +308,7 @@ public class DelovniNalogView extends VerticalLayout {
             gumbi.setSpacing(true);
             gumbi.setPadding(false);
             return gumbi;
-        }).setHeader("Začetek / Konec").setWidth("230px").setFlexGrow(0);
+        }).setHeader("").setWidth("230px").setFlexGrow(0);
 
         // 4: PDF  <<
         grid.addComponentColumn(dto -> {
@@ -295,10 +327,14 @@ public class DelovniNalogView extends VerticalLayout {
         }).setHeader("PDF").setWidth("80px").setFlexGrow(0);
 
         // 5: IZDELANO KOSOU  <<
-        grid.addColumn(dto -> {
+        grid.addComponentColumn(dto -> {
             Double sum = dto.getSumEuKolDobrih();
-            return (sum != null ? sum.intValue() : 0) + " kos";
-        }).setHeader("Izdelano").setWidth("100px").setFlexGrow(0);
+            int kos = sum != null ? sum.intValue() : 0;
+            Div d = new Div();
+            d.setText(kos + " kos");
+            if (kos != 0) d.getStyle().set("font-weight", "bold");
+            return d;
+        }).setHeader("Že izdelano").setWidth("100px").setFlexGrow(0);
 
         // 6: OPOMBA  <<
         grid.addColumn(DelovniNalogDto::getMpOpomba)
