@@ -51,15 +51,15 @@ public class DelovniNalogService {
      * KONEC: izračuna status (KO/ND), vpiše panele, vstavi Evidencaur
      */
     @Transactional
-    public void zakljuciNalog(DelovniNalogDto nalog, int steviloPanelov, String operater, String opomba) {
+    public void zakljuciNalog(DelovniNalogDto nalog, int dobri, int izmet, Integer vzrokIzmeta, String operater, String opomba) {
         //double pakirano   = safe(nalog.getMpKolPakiranMp(), 1.0);
-        double pankos = steviloPanelov;
+        double pankos = dobri;
         double sumDobrih  = safe(nalog.getSumEuKolDobrih(), 0.0);
         //double sumCustom1 = safe(nalog.getSumEuCustom1(), 0.0); ne rabmo več k se kle ne štejejo paneli, sam raw kosi
         double zaIzdelavo = safe(nalog.getDnpKolZaIzdelavo(), 0.0);
 
         double novSkupajKosi    = sumDobrih + pankos;
-        //int    novSkupajPanelov = (int)(sumCustom1 + steviloPanelov);
+        //int    novSkupajPanelov = (int)(sumCustom1 + dobri);
 
         boolean zakljucen = novSkupajKosi >= zaIzdelavo;
         String novStatus = zakljucen ? "KO" : "ND";
@@ -71,11 +71,12 @@ public class DelovniNalogService {
         eu.setEuKolDobrih((int) pankos);
         eu.setEuKolIzmeta(0);
         eu.setEuCustom1(null); //String.valueOf(novSkupajPanelov));
-        eu.setEuCustom2(null); //String.valueOf(steviloPanelov));
+        eu.setEuCustom2(null); //String.valueOf(dobri));
         eu.setEuZadnjaOp(zadnjaOp);
         eu.setEuVrstaIzm(0);
         eu.setEuStZapOperacije(nalog.getPdnInfZapStDp());
         eu.setEuOpomba(opomba != null && !opomba.isBlank() ? opomba : null); //podana ob koncu če če
+        eu.setEuVzrokIzmeta(vzrokIzmeta); //doda se st. napake
 
         repo.insertEvidencaur(eu);
     }
@@ -124,5 +125,10 @@ public class DelovniNalogService {
 
     private double safe(Double val, double fallback) {
         return (val != null && val > 0) ? val : fallback;
+    }
+
+    //izpis možnih napak
+    public List<DelovniNalogRepository.Napaka> getNapake() {
+        return repo.getNapake();
     }
 }

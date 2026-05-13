@@ -1,7 +1,9 @@
 package com.workorder.ui;
 
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.workorder.model.DelovniNalogDto;
+import com.workorder.repository.DelovniNalogRepository;
 import com.workorder.service.DelovniNalogService;
 
 import com.vaadin.collaborationengine.CollaborationEngine;
@@ -404,12 +406,12 @@ public class DelovniNalogView extends VerticalLayout {
                 .set("color", "var(--lumo-secondary-text-color)")
                 .set("font-size", "0.9em");
 
-        IntegerField paneliField = new IntegerField("Količina (kosi)");
-        paneliField.setMin(1);
-        paneliField.setMax(maxKos);
-        paneliField.setValue(maxKos);
-        paneliField.setStepButtonsVisible(true);
-        paneliField.setWidthFull();
+        IntegerField paneli = new IntegerField("Količina (kosi)");
+        paneli.setMin(1);
+        paneli.setMax(maxKos);
+        paneli.setValue(maxKos);
+        paneli.setStepButtonsVisible(true);
+        paneli.setWidthFull();
 
         Button potrdi  = new Button("Potrdi", VaadinIcon.CHECK.create());
         Button prekini = new Button("Prekini", VaadinIcon.CLOSE.create());
@@ -423,22 +425,49 @@ public class DelovniNalogView extends VerticalLayout {
         opomba.setWidthFull();
         opomba.setMaxLength(500);
 
+        //dodajanje napake (če da da je izmet >0)
+        ComboBox<DelovniNalogRepository.Napaka> vzrok = new ComboBox<>("Vzrok izmeta");
+        vzrok.setItems(service.getNapake());
+        vzrok.setItemLabelGenerator(n -> n.sifra() + "  ~  " + n.naziv());
+        vzrok.setWidthFull();
+        vzrok.setVisible(false); //skrit dokler ni izmet
+
+        IntegerField izmet = new IntegerField("Slabo izdelanih / izmet (kosi)");
+        izmet.setMin(0);
+        izmet.setValue(0);
+        izmet.setStepButtonsVisible(true);
+        izmet.setMax(maxKos);
+        izmet.setWidthFull();
+
 
         final int maxKosFinal = maxKos;
         potrdi.addClickListener(e -> {
-            Integer vpisano = paneliField.getValue();
-            if (vpisano == null || vpisano <= 0) {
+            Integer dobri = paneli.getValue();
+            if (dobri == null || dobri <= 0) {
                 showNotification("Vnesi veljavno količino!", true);
                 return;
             }
-            double sumTotal = sumDob + vpisano; //prev: ne preseže naročenga
+            double sumTotal = sumDob + dobri; //prev: ne preseže naročenga
             if (sumTotal > zaIzd) {
                 showNotification("NAPAKA: Vpisanih je več kot lansiranih! Maks: "
                         + maxKosFinal + " kos", true);
                 return;
             }
             try {
-                service.zakljuciNalog(dto, vpisano, localUser.getName(), opomba.getValue());
+                Integer vzrokSt = vzrok.getValue() != null ? vzrok.getValue().sifra() : null;
+
+                // obvezn vrok izmeta
+                if (izmet.getValue() != null && izmet.getValue() > 0 && vzrokSt == null) {
+                    showNotification("Izberi vzrok izmeta!", true);
+                    return;
+                }
+                // prever da seštevek == maxKos
+                if (dobri + izmet.getValue() > maxKosFinal) {
+                    showNotification("Skupaj dobri + izmet ne sme preseči " + maxKosFinal + " kosov!", true);
+                    return;
+                }
+
+                service.zakljuciNalog(dto, dobri, izmet.getValue(), vzrokSt, localUser.getName(), opomba.getValue());
                 dialog.close();
                 broadcastRefresh(); // osvežimo vse terminale
                 showNotification("Nalog " + dto.getPdnStDelNaloga() + " >> konec zabeležen.", false);
@@ -447,7 +476,32 @@ public class DelovniNalogView extends VerticalLayout {
             }
         });
 
-        dialog.add(new VerticalLayout(info, paneliField, opomba));
+        // ko se izmet spremeni >> odšteje iz dobrih in preveri
+        izmet.addValueChangeListener(e -> {
+            vzrok.setVisible(e.getValue() != null && e.getValue() > 0);
+            // če sum preseže max > odšteje iz dobrih
+            if (e.getValue() != null && paneli.getValue() != null) {
+                int skupaj = paneli.getValue() + e.getValue();
+                if (skupaj > maxKosFinal) {
+                    paneli.setValue(maxKosFinal - e.getValue());
+                }
+            }
+        });
+        // Ko se dobri spremenijo >> izmet se prilagodi
+        paneli.addValueChangeListener(e -> {
+            if (e.getValue() != null && izmet.getValue() != null) {
+                int skupaj = e.getValue() + izmet.getValue();
+                if (skupaj > maxKosFinal) {
+                    izmet.setValue(maxKosFinal - e.getValue());
+                    vzrok.setVisible(maxKosFinal - e.getValue() > 0);
+                }
+            }
+        });
+
+
+
+
+        dialog.add(new VerticalLayout(info, paneli, izmet, vzrok, opomba));
         dialog.getFooter().add(prekini, potrdi);
         dialog.open();
     }

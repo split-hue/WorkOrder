@@ -82,3 +82,7 @@ html {
     --grid-header-bg: #2c3d52;
     --banner-color: 255, 255, 255;
     }
+
+vaadin-button {
+    cursor: pointer;
+}

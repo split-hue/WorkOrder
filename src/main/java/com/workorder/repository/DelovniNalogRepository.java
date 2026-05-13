@@ -221,4 +221,14 @@ public class DelovniNalogRepository {
             return d;
         }
     }
+
+    //record/DTO za izpis možnih napak
+    public record Napaka(Integer sifra, String naziv) {}
+
+    public List<Napaka> getNapake() {
+        return jdbc.query(
+                "SELECT NapSifra, NapNaziv FROM Napaka ORDER BY NapSifra",
+                (rs, rowNum) -> new Napaka(rs.getInt("NapSifra"), rs.getString("NapNaziv"))
+        );
+    }
 }
